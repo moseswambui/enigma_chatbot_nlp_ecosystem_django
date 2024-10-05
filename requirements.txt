@@ -1,0 +1,15 @@
+
+celery
+certifi
+Django
+djangorestframework
+keras
+nltk
+psycopg2-binary
+python-dotenv
+spacy-legacy
+spacy-loggers
+
+tensorflow
+
+gunicorn

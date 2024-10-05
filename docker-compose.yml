@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: chatbot_db
+      POSTGRES_USER: iamnderitum
+      POSTGRES_PASSWORD: 011235813
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    networks:
+      - chatbot_network
+
+  redis:
+    image: "redis:alpine"
+    networks:
+      - chatbot_network
+
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 config.wsgi:application
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    networks:
+      - chatbot_network
+
+networks:
+  chatbot_network:
+    driver: bridge

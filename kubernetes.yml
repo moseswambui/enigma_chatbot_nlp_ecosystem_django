@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatbot-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: chatbot
+  template:
+    metadata:
+      labels:
+        app: chatbot
+    spec:
+      containers:
+      - name: chatbot
+        image: your_dockerhub_username/chatbot_image:latest
+        ports:
+        - containerPort: 8000
+      - name: redis
+        image: redis:alpine
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatbot-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8000
+  selector:
+    app: chatbot
